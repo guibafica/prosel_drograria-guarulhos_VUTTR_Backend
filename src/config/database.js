@@ -1,3 +1,7 @@
+// Tenho em mente que dados como estes, deveriam estar no '.env',
+// porem, como este é um projeto de avaliação, decidi deixar aqui mesmo para
+// facilitar os testes.
+
 module.exports = {
   dialect: 'postgres',
   host: 'localhost',

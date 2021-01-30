@@ -1,25 +1,27 @@
-// import Sequelize from 'sequelize';
+/* eslint-disable */
+// prettier-ignore
+import Sequelize from 'sequelize';
 
-// // import tbAssociados from '../app/models/tbAssociados';
+import User from '../app/models/User';
 
-// // import databaseConfig from '../config/database';
+import databaseConfig from '../config/database';
 
-// const models = [
-//   // tbAssociados,
-// ];
+const models = [User];
 
-// class Database {
-//   constructor() {
-//     this.init();
-//   }
+class Database {
+  constructor() {
+    this.init();
+  }
 
-//   init() {
-//     this.connection = new Sequelize(databaseConfig);
+  init() {
+    this.connection = new Sequelize(databaseConfig);
 
-//     models
-//       .map((model) => model.init(this.connection))
-//       .map((model) => model.associate && model.associate(this.connection.models));
-//   }
-// }
+    models.map((model) => {
+      model.init(this.connection);
 
-// export default new Database();
+      model.associate && model.associate(this.connection.models);
+    });
+  }
+}
+
+export default new Database();
