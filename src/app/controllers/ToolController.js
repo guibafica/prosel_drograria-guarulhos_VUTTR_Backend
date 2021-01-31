@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 
 import Tool from '../models/Tool';
 
-class UserController {
+class ToolController {
   async index(req, res) {
     // Verifica se tem o filtro e se ta passando pelo nome 'tag'
     if (req.query && req.query.tag) {
@@ -11,7 +11,8 @@ class UserController {
         where: {
           deleted_at: null,
         },
-        order: ['title'],
+        // Para ficar igual ao exemplo do desafio, basta não ordenar
+        // order: ['title'],
         attributes: ['id', 'title', 'link', 'description', 'tags'],
       });
 
@@ -47,7 +48,8 @@ class UserController {
       where: {
         deleted_at: null,
       },
-      order: ['title'],
+      // Para ficar igual ao exemplo do desafio, basta não ordenar
+      // order: ['title'],
       attributes: ['id', 'title', 'link', 'description', 'tags'],
     });
 
@@ -105,59 +107,81 @@ class UserController {
 
   async update(req, res) {
     const schema = Yup.object().shape({
-      name: Yup.string(),
-      email: Yup.string().email(),
-      oldPassword: Yup.string().min(6),
-      password: Yup.string()
-        .min(6)
-        .when('oldPassword', (oldPassword, field) =>
-          oldPassword ? field.required() : field
-        ),
-      confirmPassword: Yup.string().when('password', (password, field) =>
-        password ? field.required().oneOf([Yup.ref('password')]) : field
-      ),
+      title: Yup.string(),
+      link: Yup.string(),
+      description: Yup.string(),
+      tags: Yup.array(),
     });
 
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails.' });
     }
 
-    const { email, oldPassword } = req.body;
+    const { id } = req.params;
 
-    const user = await User.findByPk(req.userId);
+    const toolExists = await Tool.findByPk(id);
 
-    if (!user) {
-      return res.status(400).json({ error: 'User does not exists.' });
+    if (!toolExists) {
+      return res.status(404).json({ error: 'Tool does not exist.' });
     }
 
-    // Verifica se o novo email que será atualizado já não está sendo usado.
-    if (email && email !== user.email) {
-      const userExists = await User.findOne({
-        where: { email },
-      });
-
-      if (userExists) {
-        return res.status(400).json({ error: 'User already exists.' });
-      }
+    if (toolExists.deleted_at) {
+      return res.status(401).json({ error: 'Tool deleted.' });
     }
 
-    // Valida a senha antiga.
-    if (oldPassword && !(await user.checkPassword(oldPassword))) {
-      return res.status(401).json({ error: 'Password does not match.' });
+    // Precisei 'desestruturar' o update devido a essa conversão do array para string
+    // das tags.
+    if (req.body.tags) {
+      const tagsArray = req.body.tags.toString().split(',').join(', ');
+
+      toolExists.tags = tagsArray;
+
+      // await toolExists.save();
     }
 
-    const { id, name } = await user.update(req.body);
+    if (req.body.title) toolExists.title = req.body.title;
 
-    return res.json({
-      id,
-      name,
-      email,
-    });
+    if (req.body.link) toolExists.link = req.body.link;
+
+    if (req.body.description) toolExists.description = req.body.description;
+
+    const newToll = await toolExists.save();
+
+    return res.json(newToll);
   }
 
   async delete(req, res) {
-    return res.json({ ok: 'delete' });
+    const schema = Yup.object().shape({
+      id: Yup.number().required(),
+    });
+
+    if (!(await schema.isValid(req.params))) {
+      return res.status(400).json({ error: 'Validation fails.' });
+    }
+
+    const { id } = req.params;
+
+    const toolExists = await Tool.findByPk(id);
+
+    if (!toolExists) {
+      return res.status(404).json({ error: 'Tool does not exist.' });
+    }
+
+    if (toolExists.deleted_at) {
+      return res.status(401).json({ error: 'Tool already deleted.' });
+    }
+
+    // Como comentei antes, em vez de literalmente deletar os dados do banco de dados
+    // eu simplesmente marco ele como deletado, assim nas filtragens ele não é usado
+    // porém em alguma necessidade o dado vai continuar guardado no banco de dados
+    // para alguma consulta específica. Como dizem, dados é dinheiro, então nunca é
+    // bom perder dados.
+    toolExists.deleted_at = new Date();
+
+    await toolExists.save();
+
+    return res.status(204).json();
   }
 }
 
-export default new UserController();
+export default new ToolController();

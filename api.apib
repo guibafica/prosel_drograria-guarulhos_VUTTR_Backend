@@ -1,0 +1,44 @@
+FORMAT: 1A
+HOST: http://localhost:3333
+
+# Sample da API
+
+Descrição da Sample.
+
+# Group API
+
+# Sobre [/]
+
+Aqui podemos descrever detalhes que são comuns a todos os serviços como formatos,
+headers, tipos de erros, etc.
+
+# Group Mensagem
+
+## Mensagens [/message]
+
+### Criar mensagens [POST]
+
++ Request Criar uma mensagem
+
+  + Headers
+
+    Accept: application/json
+    Content-Type: application/json
+  + Attributes (Message)
+
++ Response 201 (application/json)
+  + Attributes (Created)
+
+### Listar mensagens [GET]
+
++ Response 200 (application/json)
+  + Attributes (array[Message])
+
++ Response 404 (application/json)
+  + Attributes (Error)
+
+# Data Structures
+
+## Message (object)
++ subject (string) - Assunto da Mensagem
++ body (string) - Corpo da mensagem
