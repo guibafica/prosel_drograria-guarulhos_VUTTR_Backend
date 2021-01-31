@@ -1,23 +1,26 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('users', {
+    await queryInterface.createTable('tools', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
       },
-      name: {
+      title: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      email: {
+      link: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
       },
-      password_hash: {
-        type: Sequelize.STRING,
+      description: {
+        type: Sequelize.TEXT,
+        allowNull: false,
+      },
+      tags: {
+        type: Sequelize.TEXT,
         allowNull: false,
       },
       created_at: {
@@ -28,10 +31,6 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      // Eu uso o 'deleted_at' como uma forma de 'deletar' o item das consultas usando
-      // uma estratégia para não perder esses dados, mesmo ele não estando mais
-      // acessível no código, (faço a filtragem quando o 'deleted_at' tiver null),
-      // ainda podemos visualiza-lo diretamente no BD.
       deleted_at: {
         type: Sequelize.DATE,
         allowNull: true,
@@ -40,6 +39,6 @@ module.exports = {
   },
 
   down: async (queryInterface) => {
-    await queryInterface.dropTable('users');
+    await queryInterface.dropTable('tools');
   },
 };
