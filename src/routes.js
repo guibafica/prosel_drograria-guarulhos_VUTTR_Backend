@@ -11,12 +11,13 @@ const routes = express.Router();
 routes.get('/', (req, res) => res.json({ message: 'Hello VUTTR!!!' }));
 
 routes.post('/users', UserController.store);
+routes.put('/users', UserController.update);
 
 routes.post('/sessions', SessionController.store);
 
+// Remover a linha de baixo para desabilitar que as rotas sejam acessíveis
+// apenas com o token JWT.
 routes.use(authMiddleware);
-
-routes.put('/users', UserController.update);
 
 routes.get('/tools', ToolController.index);
 routes.post('/tools', ToolController.store);

@@ -3,42 +3,226 @@ HOST: http://localhost:3333
 
 # Sample da API
 
-Descrição da Sample.
+API e banco de dados para a aplicação VUTTR (Very Useful Tools to Remember). A aplicação é um simples repositório para gerenciar ferramentas com seus respectivos nomes, links, descrições e tags.
 
 # Group API
 
-# Sobre [/]
+## Home [/]
 
-Aqui podemos descrever detalhes que são comuns a todos os serviços como formatos,
-headers, tipos de erros, etc.
+### Boas-Vindas [GET]
 
-# Group Mensagem
+Apenas uma rota simples para testar se a API está online e funcionando perfeitamente, geralmente faço isso antes de realizar o deploy. É uma forma prática e rápida.
 
-## Mensagens [/message]
 
-### Criar mensagens [POST]
 
-+ Request Criar uma mensagem
+# Group Session
+
+## Sessions [/sessions]
+
+### Criar sessão [POST]
+
++ Request Criar uma sessão para gerar o token JWT e acessar rotas autenticadas.
 
   + Headers
-
     Accept: application/json
     Content-Type: application/json
-  + Attributes (Message)
 
-+ Response 201 (application/json)
-  + Attributes (Created)
-
-### Listar mensagens [GET]
+  + Attributes (Login)
 
 + Response 200 (application/json)
-  + Attributes (array[Message])
+  + Attributes (Login + TokenJWT)
+
++ Response 400 (application/json)
+  + Attributes (Bad Request - 'Validation fails')
+
++ Response 401 (application/json)
+  + Attributes (Unauthorized - 'User not found.')
+  + Attributes (Unauthorized - 'Unauthorized login.')
+  + Attributes (Unauthorized - 'Password does not match.')
+
+
+
+# Group User
+
+## Users [/users]
+
+### Criar Usuário [POST]
+
++ Request Criar um usuário para realizar o login e acessar rotas autenticadas.
+
+  + Headers
+    Accept: application/json
+    Content-Type: application/json
+
+  + Attributes (UserCreate)
+
++ Response 200 (application/json)
+  + Attributes (UserCreateFiltered)
+
++ Response 400 (application/json)
+  + Attributes (Bad Request - 'Validation fails.')
+  + Attributes (Bad Request - 'User already exists.')
+
+### Atualiza Usuário [PUT]
+
++ Request Atualizar um usuário.
+
+  + Headers
+    Accept: application/json
+    Content-Type: application/json
+
+  + Attributes (UserCreate)
+
++ Response 200 (application/json)
+  + Attributes (UserCreateFiltered)
+
++ Response 400 (application/json)
+  + Attributes (Bad Request - 'Validation fails.')
+  + Attributes (Bad Request - 'User does not exists.')
+  + Attributes (Bad Request - 'User already exists.')
+
++ Response 401 (application/json)
+  + Attributes (Unauthorized - 'Password does not match.')
+
+
+
+# Group Tool
+
+## Tools [/tools]
+
+### Criar Ferramenta [POST]
+
++ Request Criar uma ferramenta.
+
+  + Headers
+    Accept: application/json
+    Content-Type: application/json
+    Authorization: Bearer TokenJWT
+
+  + Attributes (ToolCreate)
+
++ Response 201 (application/json)
+  + Attributes (ToolCreate)
+
++ Response 400 (application/json)
+  + Attributes (Bad Request - 'Validation fails.')
+  + Attributes (Bad Request - 'Tool already exists.')
+
+### Lista Ferramenta [GET]
+
++ Request Listar todas as ferramentas.
+
+  + Headers
+    Accept: application/json
+    Content-Type: application/json
+    Authorization: Bearer TokenJWT
+
++ Response 200 (application/json)
+  + Attributes (array[Tools])
+
+## Tools [/tools/:id]
+
++ Parameters
+  + id: 1 (number) - ID da Tool
+
+### Atualiza Ferramenta [PUT]
+
++ Request Atualizar uma ferramenta.
+
+  + Headers
+    Accept: application/json
+    Content-Type: application/json
+    Authorization: Bearer TokenJWT
+
+  + Attributes (ToolCreate)
+
++ Response 200 (application/json)
+  + Attributes (ToolCreate)
+
++ Response 400 (application/json)
+  + Attributes (Bad Request - 'Validation fails.')
+
++ Response 401 (application/json)
+  + Attributes (Unauthorized - 'Tool deleted.')
 
 + Response 404 (application/json)
-  + Attributes (Error)
+  + Attributes (Not Found - 'Tool does not exist.')
+
+### Deleta Ferramenta [DELETE]
+
++ Request Deletar uma ferramenta.
+
+  + Headers
+    Accept: application/json
+    Content-Type: application/json
+    Authorization: Bearer TokenJWT
+
++ Response 204 (application/json)
+
++ Response 400 (application/json)
+  + Attributes (Bad Request - 'Validation fails.')
+
++ Response 401 (application/json)
+  + Attributes (Unauthorized - 'Tool already deleted.')
+
++ Response 404 (application/json)
+  + Attributes (Not Found - 'Tool does not exist.')
+
+## Tools com Filtro [/tools]
+
+### Lista Ferramenta com Filtro [GET]
+
++ Request Listar ferramentas com um filtro de tag.
+
+  + Headers
+    Accept: application/json
+    Content-Type: application/json
+    Authorization: Bearer TokenJWT
+
+  + Query Params
+  + id: 1 (number) - ID da Tool
+    tag: organization (string) - Tag da Tool para filtragem
+
++ Response 200 (application/json)
+  + Attributes (array[Tools])
+
+
 
 # Data Structures
 
-## Message (object)
-+ subject (string) - Assunto da Mensagem
-+ body (string) - Corpo da mensagem
+## Login (object)
++ email (string) - Email cadastrado pelo usuário
++ password (string) - Senha cadastrada pelo usuário
+
+## TokenJWT (string)
++ token (string) - Token para autenticação JWT
+
+## Login (object)
++ email (string) - Email cadastrado pelo usuário
++ password (string) - Senha cadastrada pelo usuário
+
+## UserCreate (object)
++ name (string) - Nome do usuario para cadastro
++ email (string) - Email do usuario para cadastro
++ password (string) - Senha do usuario para cadastro
+
+## UserCreateFiltered (object)
++ id (integer) - ID gerado automaticamente após o cadastro
++ name (string) - Nome do usuario cadastrado
++ email (string) - Email do usuario cadastrado
+
+## ToolCreate (object)
++ title (string) - Título da ferramenta que será cadastrada
++ link (string) - Link da ferramenta que será cadastrada
++ description (string) - Descrição da ferramenta que será cadastrada
++ tags (array de strings) - Array de tags em formato string da ferramenta que será cadastrada
+
+## Tools (object)
++ id (integer) - ID gerado automaticamente após o cadastro
++ title (string) - Título da ferramenta cadastrada
++ link (string) - Link da ferramenta cadastrada
++ description (string) - Descrição da ferramenta cadastrada
++ tags (array de strings) - Array de tags em formato string da ferramenta cadastrada
+
+## tag (string)
++ tag (string) - Nome que será usado para filtrar Ferramentas cadsatrada com esta mesma tag
