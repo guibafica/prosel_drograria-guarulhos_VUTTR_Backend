@@ -6,7 +6,17 @@ Com o [NodeJS](https://nodejs.org/en/) devidamente instalado, basta acessar, pel
 
 > Após executar um dos comandos acima, deve aparecer a seguinte mensagem no terminal: '🚀 Server started'. Neste momento, a API está rodando e pronta para ser acessada na porta 3333, basta chamar alguma de suas rotas, como por exemplo: '[http://localhost:3333/](http://localhost:3333/)'.
 
-# Anotações Importantes
+### Banco de dados:
+
+Para o banco de dados, usei o PostgreSQL, então bastar você ter conexão com este banco em sua máquina e rodar as migrations, caso não tenha, podemos utilizar o Docker para isolar o banco em um container.
+
+1 - Instale o [Docker CE](https://docs.docker.com/engine/install/) de acordo com seu Sistema Operacional. Depois de instalar, verifique se ocorreu tudo bem executando o comando `docker -v` ou `docker help`;
+
+2 - Agora crie o container com o postgreSQL, rode no terminal: `docker run --name vuttr -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres`;
+
+3 - E por fim, basta rodar as migrations pelo terminal na raiz desse projeto: `yarn sequelize db:migrate` ou `npx sequelize db:migrate`.
+
+# Anotações Importantes:
 
 - As rotas pedidas no desafio, estão configuradas para serem acessadas apenas após o login, passando o token JWT, fiz isso na intenção de simular uma aplicação em produção, alem de mostrar meu conhecimento. Para acessar essas rotas, basta cadastrar um usuário, logar e passar o bearer token como ta descrito na documentação. Caso queiram, podem simplesmente remover a linha 'routes.use(authMiddleware);' do arquivo routes para desabilitar esse middleware.
 
@@ -32,7 +42,9 @@ Com o [NodeJS](https://nodejs.org/en/) devidamente instalado, basta acessar, pel
 
   - database.js
 
-# Principais Libs usadas
+- Como irei citar posteriormente, o banco de dados configurado nesta aplicação, esta hospedado na aws, caso ocorra algum erro de conexão, favor ir no arquivo 'database.js', comentar credenciais da aws e descomentar as credencias localhost. Não esquecer de rodar as migrations.
+
+# Principais Libs usadas:
 
 - bcryptjs => Criptografia de senha;
 - express => Core do servidor;
@@ -43,13 +55,10 @@ Com o [NodeJS](https://nodejs.org/en/) devidamente instalado, basta acessar, pel
 - eslint + prettier => Indentação e Organização de código;
 - sucrase => Mudar sintaxe para padrão 'import/export';
 
-# Deploy da aplicação
+# Deploy da aplicação:
 
-Realizei o deploy da aplicação utilizando os serviços AWS:
+Realizei apenas o deploy do BD na AWS. Quando fui deixar a API online, percebi instabilidades no serviço EC2 AWS 'Serviço esse que utilizo para deploy do Backend', então decidi deixar a api localhost mesmo.
 
 - Deploy do Banco de Dados => RDS
-- Deploy da API => S3
 
-Já vou deixar o banco da AWS pre configurado aqui, para qualquer interação já ser no BD online, porém durante o desenvolvimento, utilizei um container Docker para isolar um novo banco de dados PG exclusivo para esta aplicação. Já vou deixar também algumas ferramentas pre criadas lá para enriquecer as consultas. A api pode ser acessada tanto localmente quanto no seguinte link: [link]().
-
-Como não é o foco do desafio, não configurei domínio nem certificado SSL para o link da api no AWS.
+Já vou deixar o banco da AWS pré configurado aqui, para qualquer interação já ser no BD online, porém durante o desenvolvimento, utilizei um container Docker para isolar um novo banco de dados PG exclusivo para esta aplicação. Já vou deixar também algumas ferramentas pré criadas lá para enriquecer as consultas.
