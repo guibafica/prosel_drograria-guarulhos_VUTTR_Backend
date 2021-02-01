@@ -16,7 +16,7 @@ Com o [NodeJS](https://nodejs.org/en/) devidamente instalado, basta acessar, pel
 
 - Utilizei uma ferramenta do API Blueprint chamada [aglio](https://github.com/danielgtaylor/aglio) para converter o arquivo api.apib 'criado manualmente por mim' para gerar uma versão em html para ficar mais fácil e agradável de visualizar o resultado final da documentação. O arquivo é o 'index.html' que está localizado na raiz do projeto. Estou usando uma extensão pra vsCode chamada 'Live Server' do 'Ritwick Dey' ela me permite rodar facilmente um arquivo html. Basta apenas abrir o arquivo e no canto direito inferior da tela vai aparecer uma opção 'Go Live', clicando nela, ele cria automaticamente um server html q estará rodando localhost na porta 5500.
 
-<img align="center" src="https://github.com/guibafica/prosel_drograria-guarulhos_VUTTR_Backend/blob/master/images/ScreenDocAglio.png" width="450"/>
+<img align="center" src="https://raw.githubusercontent.com/guibafica/prosel_drograria-guarulhos_VUTTR_Backend/main/images/ScreenDocAglio.png?token=ANTZSLJIJ2QWDFBAPL355KTAC5KBY" width="450"/>
 
 - Para facilitar, coloquei na raiz do projeto meu arquivo do Insomnia, que utilizei para realizar os testes das rotas.
 
