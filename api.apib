@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: http://localhost:3333
 
-# Sample da API
+# Sample da API vuttr
 
 API e banco de dados para a aplicação VUTTR (Very Useful Tools to Remember). A aplicação é um simples repositório para gerenciar ferramentas com seus respectivos nomes, links, descrições e tags.
 
@@ -33,12 +33,10 @@ Apenas uma rota simples para testar se a API está online e funcionando perfeita
   + Attributes (Login + TokenJWT)
 
 + Response 400 (application/json)
-  + Attributes (Bad Request - 'Validation fails')
+  + Attributes (Bad Request)
 
 + Response 401 (application/json)
-  + Attributes (Unauthorized - 'User not found.')
-  + Attributes (Unauthorized - 'Unauthorized login.')
-  + Attributes (Unauthorized - 'Password does not match.')
+  + Attributes (Unauthorized)
 
 
 
@@ -60,8 +58,7 @@ Apenas uma rota simples para testar se a API está online e funcionando perfeita
   + Attributes (UserCreateFiltered)
 
 + Response 400 (application/json)
-  + Attributes (Bad Request - 'Validation fails.')
-  + Attributes (Bad Request - 'User already exists.')
+  + Attributes (Bad Request)
 
 ### Atualiza Usuário [PUT]
 
@@ -77,12 +74,10 @@ Apenas uma rota simples para testar se a API está online e funcionando perfeita
   + Attributes (UserCreateFiltered)
 
 + Response 400 (application/json)
-  + Attributes (Bad Request - 'Validation fails.')
-  + Attributes (Bad Request - 'User does not exists.')
-  + Attributes (Bad Request - 'User already exists.')
+  + Attributes (Bad Request)
 
 + Response 401 (application/json)
-  + Attributes (Unauthorized - 'Password does not match.')
+  + Attributes (Unauthorized)
 
 
 
@@ -105,8 +100,7 @@ Apenas uma rota simples para testar se a API está online e funcionando perfeita
   + Attributes (ToolCreate)
 
 + Response 400 (application/json)
-  + Attributes (Bad Request - 'Validation fails.')
-  + Attributes (Bad Request - 'Tool already exists.')
+  + Attributes (Bad Request)
 
 ### Lista Ferramenta [GET]
 
@@ -140,13 +134,13 @@ Apenas uma rota simples para testar se a API está online e funcionando perfeita
   + Attributes (ToolCreate)
 
 + Response 400 (application/json)
-  + Attributes (Bad Request - 'Validation fails.')
+  + Attributes (Bad Request)
 
 + Response 401 (application/json)
-  + Attributes (Unauthorized - 'Tool deleted.')
+  + Attributes (Unauthorized)
 
 + Response 404 (application/json)
-  + Attributes (Not Found - 'Tool does not exist.')
+  + Attributes (Not Found)
 
 ### Deleta Ferramenta [DELETE]
 
@@ -160,13 +154,13 @@ Apenas uma rota simples para testar se a API está online e funcionando perfeita
 + Response 204 (application/json)
 
 + Response 400 (application/json)
-  + Attributes (Bad Request - 'Validation fails.')
+  + Attributes (Bad Request)
 
 + Response 401 (application/json)
-  + Attributes (Unauthorized - 'Tool already deleted.')
+  + Attributes (Unauthorized)
 
 + Response 404 (application/json)
-  + Attributes (Not Found - 'Tool does not exist.')
+  + Attributes (Not Found)
 
 ## Tools com Filtro [/tools]
 
@@ -197,9 +191,10 @@ Apenas uma rota simples para testar se a API está online e funcionando perfeita
 ## TokenJWT (string)
 + token (string) - Token para autenticação JWT
 
-## Login (object)
+## Login + TokenJWT (object)
 + email (string) - Email cadastrado pelo usuário
 + password (string) - Senha cadastrada pelo usuário
++ token (string) - Token JWT de autenticação bearer
 
 ## UserCreate (object)
 + name (string) - Nome do usuario para cadastro
@@ -207,7 +202,7 @@ Apenas uma rota simples para testar se a API está online e funcionando perfeita
 + password (string) - Senha do usuario para cadastro
 
 ## UserCreateFiltered (object)
-+ id (integer) - ID gerado automaticamente após o cadastro
++ id (number) - ID gerado automaticamente após o cadastro
 + name (string) - Nome do usuario cadastrado
 + email (string) - Email do usuario cadastrado
 
@@ -215,14 +210,24 @@ Apenas uma rota simples para testar se a API está online e funcionando perfeita
 + title (string) - Título da ferramenta que será cadastrada
 + link (string) - Link da ferramenta que será cadastrada
 + description (string) - Descrição da ferramenta que será cadastrada
-+ tags (array de strings) - Array de tags em formato string da ferramenta que será cadastrada
++ tags (array) - Array de tags em formato string da ferramenta que será cadastrada
 
 ## Tools (object)
-+ id (integer) - ID gerado automaticamente após o cadastro
++ id (number) - ID gerado automaticamente após o cadastro
 + title (string) - Título da ferramenta cadastrada
 + link (string) - Link da ferramenta cadastrada
 + description (string) - Descrição da ferramenta cadastrada
-+ tags (array de strings) - Array de tags em formato string da ferramenta cadastrada
++ tags (array) - Array de tags em formato string da ferramenta cadastrada
 
 ## tag (string)
 + tag (string) - Nome que será usado para filtrar Ferramentas cadsatrada com esta mesma tag
+
+## Not Found (object)
++ error (string) - Mensagem informando breve descrição do erro
+
+## Unauthorized (object)
++ error (string) - Mensagem informando breve descrição do erro
+
+## Bad Request (object)
++ error (string) - Mensagem informando breve descrição do erro
+

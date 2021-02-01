@@ -12,7 +12,11 @@ Com o [NodeJS](https://nodejs.org/en/) devidamente instalado, basta acessar, pel
 
 - Eu uso o 'deleted_at' como uma forma de 'deletar' o item das consultas usando uma estratégia para não perder esses dados, mesmo ele não estando mais acessível no código, (faço a filtragem quando o 'deleted_at' tiver null), ainda podemos visualiza-lo diretamente no BD.
 
-- Esta é a primeira vez que tive contato com documentação de API.
+- Esta é a primeira vez que tive contato com documentação de API e principalmente com o API Blueprint.
+
+- Utilizei uma ferramenta do API Blueprint chamada [aglio](https://github.com/danielgtaylor/aglio) para converter o arquivo api.apib 'criado manualmente por mim' para gerar uma versão em html para ficar mais fácil e agradável de visualizar o resultado final da documentação. O arquivo é o 'index.html' que está localizado na raiz do projeto. Estou usando uma extensão pra vsCode chamada 'Live Server' do 'Ritwick Dey' ela me permite rodar facilmente um arquivo html. Basta apenas abrir o arquivo e no canto direito inferior da tela vai aparecer uma opção 'Go Live', clicando nela, ele cria automaticamente um server html q estará rodando localhost na porta 5500.
+
+<img align="right" src="https://github.com/guibafica/prosel_drograria-guarulhos_VUTTR_Backend/blob/master/ScreenDocAglio.png" width="450"/>
 
 - Para facilitar, coloquei na raiz do projeto meu arquivo do Insomnia, que utilizei para realizar os testes das rotas.
 
@@ -27,3 +31,25 @@ Com o [NodeJS](https://nodejs.org/en/) devidamente instalado, basta acessar, pel
   - auth.js
 
   - database.js
+
+# Principais Libs usadas
+
+- bcryptjs => Criptografia de senha;
+- express => Core do servidor;
+- jsonwebtoken => Gerar token de autenticação;
+- PostgreSQL => Banco de dados relacional;
+- sequelize => Conexão com BD;
+- yup => Validação de dados de entrada;
+- eslint + prettier => Indentação e Organização de código;
+- sucrase => Mudar sintaxe para padrão 'import/export';
+
+# Deploy da aplicação
+
+Realizei o deploy da aplicação utilizando os serviços AWS:
+
+- Deploy do Banco de Dados => RDS
+- Deploy da API => S3
+
+Já vou deixar o banco da AWS pre configurado aqui, para qualquer interação já ser no BD online, porém durante o desenvolvimento, utilizei um container Docker para isolar um novo banco de dados PG exclusivo para esta aplicação. Já vou deixar também algumas ferramentas pre criadas lá para enriquecer as consultas. A api pode ser acessada tanto localmente quanto no seguinte link: [link]().
+
+Como não é o foco do desafio, não configurei domínio nem certificado SSL para o link da api no AWS.
